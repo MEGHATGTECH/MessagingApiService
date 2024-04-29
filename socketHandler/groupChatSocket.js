@@ -12,11 +12,11 @@ const serverStore = require("../serverStore");
 const groupSocket = (socket, io) => {
   try {
     const { userId } = socket.user;
-    console.log("userid", userId);
+   
     socket.on("group-message", async (data) => {
       // recieve a message from user
       const response = await sendGroupMessage(userId, data);
-      console.log("response", response);
+    
       emitMessageToUser(response.participents, response.data, io);
       await getGroupInbox(response.participents, io);
       await sendPushNotification(response.data);

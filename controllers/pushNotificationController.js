@@ -40,14 +40,13 @@ exports.sendPushNotification = async (data) => {
   try {
     let responsedata = JSON.stringify(data);
     let parseData = JSON.parse(responsedata);
-    console.log("Sending push notification", parseData);
+    
 
     fs.readFile(
       path.join(__dirname, "../FireBaseConfig.json"),
       "utf8",
       async (err, jsonString) => {
         if (err) {
-          console.log("Error reading file from disk:", err);
           return err;
         }
         try {
