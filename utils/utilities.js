@@ -4,7 +4,6 @@ exports.GetObjectID = (id) => {
     return new ObjectId(id);
 }
 
-
 exports.BuildMessegeObject = (Message) => {
     return (
         {

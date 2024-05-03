@@ -21,7 +21,7 @@ const chatSocket = (socket, io) => {
       if (response) {
         emitMessageToUser(response.participents, response.data, io); // send message to the sender and the reciever
         await GetInboxList(response.participents, io);
-        await sendPushNotification(response.data)
+       // await sendPushNotification(response.data)
       }
     });
 
