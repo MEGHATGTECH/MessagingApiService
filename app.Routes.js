@@ -8,6 +8,7 @@ const ChannelRoutes = require('./routes/channel.routes')
 const TagsRoutes = require('./routes/tags.routes')
 const NotificationRoutes = require('./routes/notification.routes')
 const PushNotificationRoutes = require('./routes/pushNotification.route')
+const MessagesRoutes = require('./routes/message.routes')
 router.use('/users', UserRoute);
 router.use('/chat', ConversationRoute);
 router.use('/group', GroupsRoute);
@@ -15,6 +16,6 @@ router.use('/channel', ChannelRoutes);
 router.use('/tags', TagsRoutes);
 router.use('/notification', NotificationRoutes);
 router.use('/pushnotification', PushNotificationRoutes);
-
+router.use('/messages', MessagesRoutes);
 
 module.exports = router;
