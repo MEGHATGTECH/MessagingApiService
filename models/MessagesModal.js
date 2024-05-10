@@ -5,7 +5,7 @@ const Collections = require("../utils/Collections");
 const MessegesSchema = new mongoose.Schema({
     message: {
         type: String,
-        required: true
+        default:''
     },
     author: {
         type: Schema.Types.ObjectId,
