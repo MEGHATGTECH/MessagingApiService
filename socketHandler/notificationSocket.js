@@ -35,7 +35,7 @@ function pingUser(Users) {
     );
     if (Io) {
         connectionId.forEach((x) => {
-            Io.to(x).emit("ping-me", 'You have a new message'); // broadcast message to the selected users if they are active
+            Io.to(x).emit("ping-me", 'You have a new notification'); // broadcast message to the selected users if they are active
         });
     }
 }
