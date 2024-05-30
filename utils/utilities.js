@@ -27,7 +27,7 @@ exports.BuildGroupChatMessegeObject=(Message, groupId) =>{
         message: Message.message,
         groupId: groupId,
         userName: Message.author.name,
-        userId: Message.author.refId,
+        refId: Message.author.refId,
         seen: Message.seen,
         seenTime: Message.seenTime || "",
         attachments: Message.attachments,
