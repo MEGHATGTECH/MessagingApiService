@@ -79,7 +79,7 @@ const MessegesSchema = new mongoose.Schema({
     },
     pinnedAt:{
         type: Date,
-        default: Date.now
+        default: null
     },
 })
 MessegesSchema.method = {}

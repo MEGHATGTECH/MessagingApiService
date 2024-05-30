@@ -394,7 +394,34 @@ exports.getGroupChatHistory = async (req, res) => {
     return res.error("Error occurred while creating user", error.message);
   }
 };
+exports.getGroupPinnedChats = async (req, res) => {
+  try {
+    const groupId = req.params.groupId;
+    const group = await GroupModals.findOne({ refId: groupId });
+    const conversation = await ConversationModal.findOne({
+      type: "GROUP_CHAT",
+      groupId: group._id,
+    });
 
+    const response = [];
+    if (conversation) {
+      const messageList = await MessagesModal.find({
+        conversationId: conversation._id,
+        isPinned:true
+      })
+        .populate("author", "name refId")
+        .exec();
+      messageList.forEach((item) => {
+        response.push(BuildGroupChatMessegeObject(item));
+      });
+    }
+
+    // console.log('response', response);
+    return res.success("Success", { data: response });
+  } catch (error) {
+    return res.error("Error occurred while creating user", error.message);
+  }
+};
 exports.getGroupChatHistoryBatch = async (req, res) => {
   try {
     const groupId = req.params.groupId;

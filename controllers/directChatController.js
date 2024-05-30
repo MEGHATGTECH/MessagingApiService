@@ -104,18 +104,43 @@ exports.getDirectChatHistory = async (req, res) => {
     return res.error("Error occurred while creating user", error.message);
   }
 }
+exports.getPinnedMessages = async (req, res) => {
+  try {
+    const participentID = await getUserIdByRefId(req.params.refId)
+    const conversation = await ConversationModal.findOne({
+      type: "DIRECT_CHAT",
+      participants: {
+        $all: [
+          GetObjectID(req.userId),
+          GetObjectID(participentID)
+        ],
+      },
+    });
+    const response = []
+    if (conversation) {
+      const messageList = await MessagesModal.find({ conversationId: conversation._id, isPinned: true })
+        .populate('author', 'name refId').sort({ pinnedAt: 1 }).exec()
+      messageList.forEach(item => {
+        response.push(BuildMessegeObject(item))
+      })
+    }
+    return res.success("Success", { data: response });
+  } catch (error) {
+    return res.error("Error occurred while creating user", error.message);
+  }
+}
 
 exports.getDirectChatHistoryBatch = async (req, res) => {
   try {
     const participentID = await getUserIdByRefId(req.params.refId)
     var count = req.params.limit
-    if(count==='undefined'){
-      count=process.env.MAX_MESSAGE_LIMIT
+    if (count === 'undefined') {
+      count = process.env.MAX_MESSAGE_LIMIT
     }
     count = parseInt(count) > process.env.MAX_MESSAGE_LIMIT ? process.env.MAX_MESSAGE_LIMIT : parseInt(count)
-    var page = req.params.page 
-    if(page==='undefined'){
-page=0
+    var page = req.params.page
+    if (page === 'undefined') {
+      page = 0
     }
     const conversation = await ConversationModal.findOne({
       type: "DIRECT_CHAT",
@@ -142,6 +167,7 @@ page=0
     return res.error("Error occurred while creating user", error.message);
   }
 }
+
 exports.getDirectChatInbox = async (userID) => {
   try {
     const user = await UserModel.findById(userID);

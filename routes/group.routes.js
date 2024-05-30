@@ -13,4 +13,5 @@ router.delete("/:id",auth, groupController.deleteGroup)
 router.get("/getHistoryofGroup/:groupId",auth, groupController.getGroupChatHistory)
 router.get("/getHistoryBatch/:groupId/:page/:limit",auth, groupController.getGroupChatHistoryBatch)
 router.get("/getGroupMembers/:groupId",auth, groupController.getGroupMembers)
+router.get("/getPinnedChats/:groupId",auth, groupController.getGroupPinnedChats)
 module.exports = router;

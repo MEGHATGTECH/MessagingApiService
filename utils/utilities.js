@@ -15,13 +15,15 @@ exports.BuildMessegeObject = (Message) => {
             seenTime: Message.seenTime || '',
             attachments: Message.attachments,
             sentAt: Message.sendTime,
-            type:Message.type,
+            type: Message.type,
+            isPinned: Message.isPinned,
+            pinnedAt: Message.pinnedAt
         }
     )
 }
 
 
-exports.BuildGroupChatMessegeObject=(Message, groupId) =>{
+exports.BuildGroupChatMessegeObject = (Message, groupId) => {
     return {
         id: Message._id.toString(),
         message: Message.message,
@@ -32,21 +34,23 @@ exports.BuildGroupChatMessegeObject=(Message, groupId) =>{
         seenTime: Message.seenTime || "",
         attachments: Message.attachments,
         sentAt: Message.sendTime,
-        type:Message.type,
+        type: Message.type,
+        isPinned: Message.isPinned,
+        pinnedAt: Message.pinnedAt
     };
 }
 
 
-exports.BuildNotificationObject=(Notification) =>{
+exports.BuildNotificationObject = (Notification) => {
     return {
         id: Notification._id.toString(),
         content: Notification.content,
         userName: Notification.sentBy.name,
-        userId:  Notification.sentBy.refId,
+        userId: Notification.sentBy.refId,
         type: Notification.type,
         notificationType: Notification.notificationType,
         subType: Notification.subType,
         sentAt: Notification.sentAt,
-        isSeen:Notification.isSeen,
+        isSeen: Notification.isSeen,
     };
 }

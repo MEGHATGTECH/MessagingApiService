@@ -2,6 +2,7 @@ const {
   addMessageInConversation,
   getDirectChatInbox,
   setMessageSeen,
+  getPinnedMessages,
 } = require("../controllers/directChatController");
 const { sendPushNotification } = require("../controllers/pushNotificationController");
 const serverStore = require("../serverStore");
@@ -21,7 +22,7 @@ const chatSocket = (socket, io) => {
       if (response) {
         emitMessageToUser(response.participents, response.data, io); // send message to the sender and the reciever
         await GetInboxList(response.participents, io);
-       // await sendPushNotification(response.data)
+        // await sendPushNotification(response.data)
       }
     });
 
@@ -34,6 +35,8 @@ const chatSocket = (socket, io) => {
       await setMessageSeen(messageId);
       await GetInboxList([userId], io);
     });
+
+   
   } catch (error) {
     console.log("Error occurred in socket", error.message);
   }
@@ -61,6 +64,7 @@ function emitDirectInboxToUser(Users, inbox, io) {
     io.to(x).emit("receive-direct-inboxlist", inbox); // broadcast message to the selected users if they are active
   });
 }
+
 module.exports = {
   chatSocket,
   emitDirectInboxToUser,
