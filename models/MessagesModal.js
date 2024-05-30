@@ -67,7 +67,20 @@ const MessegesSchema = new mongoose.Schema({
     messageTypeID: {
         type: Schema.Types.ObjectId,
         default: null,
-    }
+    },
+    isPinned:{
+        type: Boolean,
+        trim: true,
+        default: false,
+    },
+    pinnedBy:{
+        type: Schema.Types.ObjectId,
+        ref: Collections.USER_MODEL,
+    },
+    pinnedAt:{
+        type: Date,
+        default: Date.now
+    },
 })
 MessegesSchema.method = {}
 
