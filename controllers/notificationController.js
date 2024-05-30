@@ -1,4 +1,5 @@
 const notificationModel = require("../models/notificationModel");
+const { pingUser } = require("../socketHandler/notificationSocket");
 const { BuildNotificationObject } = require("../utils/utilities");
 const { getUserIdByRefId } = require("./userController");
 
@@ -41,6 +42,21 @@ exports.getMyNotifications = async (req, res) => {
     });
     
     return res.success("Success", response);
+  } catch (error) {
+    return res.error(
+      "Error occurred while fetching notification",
+      error.message
+    );
+  }
+};
+
+
+exports.pingUserByRefId = async (req, res) => {
+  try {
+    const userId =await getUserIdByRefId( req.params.userRefId);
+    pingUser(userId)
+    
+    return res.success("Success", "Success");
   } catch (error) {
     return res.error(
       "Error occurred while fetching notification",
