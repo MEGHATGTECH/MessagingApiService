@@ -5,12 +5,10 @@ const jwt = require("jsonwebtoken");
 exports.userLogin = async (req, res) => {
   try {
     const user = req.body;
-    console.log("req.user", user);
     var existingUser = await UserModel.findOne(
       { email: user.email },
       "name email logo refId type"
     ).exec(); // find is user exist or not
-    console.log("User", existingUser);
     // if (!User) {
     //     User = await createUser(user)  // create user if not exist
     // }
@@ -52,7 +50,6 @@ const GenerateUserToken = async (user) => {
 };
 
 async function createUser(user) {
-    console.log('creating user', user);
   var Tags = [];
   if (user.tags) {
     Tags = user.tags.split(",");

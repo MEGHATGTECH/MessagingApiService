@@ -39,7 +39,7 @@ exports.getMyNotifications = async (req, res) => {
     list.forEach((item) => {
       response.push(BuildNotificationObject(item));
     });
-    console.log("list", list);
+    
     return res.success("Success", response);
   } catch (error) {
     return res.error(

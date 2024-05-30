@@ -119,7 +119,6 @@ async function sendPushNotificationToGroup(parseData, user, fcm) {
   if (!group) {
     return null;
   }
-  console.log("group", group);
   let groupMembers = group.members;
 
   const otherMembers = groupMembers.filter(

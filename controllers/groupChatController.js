@@ -33,8 +33,7 @@ exports.createGroup = async (req, res) => {
 
     const group = await GroupModals.findOne({ refId: refId });
     const fcmUser = await PushNotificationModel.findOne({ userId: userId });
-    console.log('fcmUser', fcmUser)
-    const fcm_token  = fcmUser.fcm_token;
+    const fcm_token = fcmUser ? fcmUser?.fcm_token : '';
     if (group) {
       return res.error(
         "Error occurred while creating group",
@@ -98,12 +97,12 @@ exports.addMemberInGroup = async (req, res) => {
   try {
     const { groupId, memberId } = req.body;
     const userId = req.userId;
-    console.log('userId', userId)
+
     const member = await getUserIdByRefId(memberId);
     const group = await GroupModals.findOne({ refId: groupId });
     const fcmUser = await PushNotificationModel.findOne({ userId: userId });
-    console.log('fcmUser', fcmUser)
-    const fcm_token  = fcmUser.fcm_token;
+
+    const fcm_token = fcmUser ? fcmUser?.fcm_token : '';
     let groupDetails = group;
     if (groupDetails) {
       const members = groupDetails.members;
@@ -302,7 +301,7 @@ exports.getGroupChatInbox = async (userID) => {
             .exec();
 
           if (lastMessage) {
-           
+
             const unReadCount = await MessagesModal.countDocuments({
               conversationId: conversation[0]._id,
               author: { $ne: GetObjectID(userID) },
@@ -312,16 +311,16 @@ exports.getGroupChatInbox = async (userID) => {
                 },
               },
             });
-          
-            const userId = GetObjectID(userID).toString(); 
-           
+
+            const userId = GetObjectID(userID).toString();
+
             const seen = Array.from(lastMessage.seenByGroup).find(
               (x) => x.userId.toString() === userId
             )
               ? true
               : false;
 
-            
+
             const formattedData = {
               groupName: groupDetails.groupName,
               participants: [],
@@ -396,6 +395,42 @@ exports.getGroupChatHistory = async (req, res) => {
   }
 };
 
+exports.getGroupChatHistoryBatch = async (req, res) => {
+  try {
+    const groupId = req.params.groupId;
+    const group = await GroupModals.findOne({ refId: groupId });
+    var count = req.params.limit
+    if (count === 'undefined') {
+      count = process.env.MAX_MESSAGE_LIMIT
+    }
+    count = parseInt(count) > process.env.MAX_MESSAGE_LIMIT ? process.env.MAX_MESSAGE_LIMIT : parseInt(count)
+    var page = req.params.page
+    if (page === 'undefined') {
+      page = 0
+    }
+    const conversation = await ConversationModal.findOne({
+      type: "GROUP_CHAT",
+      groupId: group._id,
+    });
+
+    const response = [];
+    if (conversation) {
+      const messageList = await MessagesModal.find({
+        conversationId: conversation._id,
+      })
+        .populate("author", "name refId").sort({ _id: -1 }).skip(page * count)
+        .limit(count).exec();
+      messageList.forEach((item) => {
+        response.push(BuildGroupChatMessegeObject(item));
+      });
+    }
+
+    // console.log('response', response);
+    return res.success("Success", { data: response });
+  } catch (error) {
+    return res.error("Error occurred while creating user", error.message);
+  }
+};
 exports.getGroupMembers = async (req, res) => {
   try {
     const groupId = req.params.groupId;
