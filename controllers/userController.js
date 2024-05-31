@@ -28,6 +28,10 @@ exports.userLogin = async (req, res) => {
       }
     } else {
       await createUser(user);
+      existingUser = await UserModel.findOne(
+        { email: user.email },
+        "name email logo refId type"
+      ).exec();
     }
 
     var result = await GenerateUserToken({ _id: existingUser._id });
@@ -62,7 +66,7 @@ async function createUser(user) {
     logo: user?.logo || "",
     password: user.password,
     tags: Tags,
-    type: user.type
+    type: user.type||''
   }).save();
 
   return userdata;
