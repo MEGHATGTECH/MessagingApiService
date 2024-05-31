@@ -54,7 +54,7 @@ exports.getMyNotifications = async (req, res) => {
 exports.pingUserByRefId = async (req, res) => {
   try {
     const userId =await getUserIdByRefId( req.params.userRefId);
-    pingUser(userId)
+    pingUser([userId])
     
     return res.success("Success", "Success");
   } catch (error) {
