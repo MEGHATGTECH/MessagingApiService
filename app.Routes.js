@@ -9,6 +9,7 @@ const TagsRoutes = require('./routes/tags.routes')
 const NotificationRoutes = require('./routes/notification.routes')
 const PushNotificationRoutes = require('./routes/pushNotification.route')
 const MessagesRoutes = require('./routes/message.routes')
+const AppUserRoutes = require('./routes/appUser.routes')
 router.use('/users', UserRoute);
 router.use('/chat', ConversationRoute);
 router.use('/group', GroupsRoute);
@@ -17,5 +18,5 @@ router.use('/tags', TagsRoutes);
 router.use('/notification', NotificationRoutes);
 router.use('/pushnotification', PushNotificationRoutes);
 router.use('/messages', MessagesRoutes);
-
+router.use('/appUser', AppUserRoutes);
 module.exports = router;

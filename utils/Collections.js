@@ -1,4 +1,5 @@
 exports.USER_MODEL = "User";
+exports.APP_USER_MODAL = "AppUser";
 exports.CONVERSATION_MODEL = "Conversation";
 exports.MESSEGES_MODEL = "Messages";
 exports.GROUPS_MODEL = "Groups";
